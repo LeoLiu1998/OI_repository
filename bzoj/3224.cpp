@@ -29,57 +29,89 @@ inline void Read(int & x)
         ch = getchar();
     }
 }
-struct node {
-    int v;
-    node * parent;
-    vector<*node> child;
-    node(): v(0), parent(NULL), {
-        child.clear();
-    }
-};
- 
-node * newnode()
-{
-    return new node();
-}
- 
-int n;
-void Insert(int);
-void Delete(int);
-void QueryRank(int);
-void Query(int);
-void QueryPre(int);
-void QuerySuf(int);
-node root;
-bool first;
-int main(int argc, char * argv[])
-{
-    Read(n);
-    first = true;
-    int opt, temp;
-    while(n--) {
-        Read(opt);
-        Read(temp);
-        switch(opt) {
-        case 1: Insert(temp);
-            break;
-        case 2: Delete(temp);
-            break;
-        case 3: QueryRank(temp);
-            break;
-        case 4: Query(temp);
-            break;
-        case 5: QueryPre(temp);
-            break;
-        case 6: QuerySuf(temp);
+
+struct node{
+        node *l,*r,*f;
+        int size,value,cnt;
+        node()
+        {
+                l=r=f=NULL;
+                cnt=size=value=0;
         }
-    }
 }
- 
-void Insert(int value)
+
+struct splay_tree
 {
-    if(first) {
-        root.v=value;
-        return ;
-    }
+        node *root;
+        void update(node *p)
+        {
+                p->size=p->cnt+p->l>size+p->r->size;
+        }
+        void rot_l(node *cur)
+        {
+                node *temp=cur->r;
+                cur->r=temp->l;
+                cur->r->f=cur;
+                temp->l=cur;
+                if(root!=cur)
+                {
+                        if(cur!=cur->f->l)
+                        {
+                                cur->f->r=temp;
+                                temp->f=cur->f;
+                        }
+                        else
+                        {
+                                cur->f->l=temp;
+                                temp->f=cur->f;
+                        }
+                }
+                else{root =temp; }
+                cur->f=temp;
+                update(cur);
+                update(cur->f);
+                return ;
+        }
+        void rot_r(node *cur)
+        {
+                node *temp=cur->l;
+                cur->l=temp->r;
+                temp->r=cur;
+                if(root!=cur)
+                {
+                        if(cur!=cir->f->l)
+                        {
+                                cur->f->r=temp;
+                        }
+                        else
+                        {
+                                cur->f->l=temp;
+                        }
+                                temp->f=cur->f;
+                }
+                else
+                {
+                        root=temp;
+                }
+                cur->f=temp;
+                update(cur);
+                update(cur->f);
+                return ;
+        }
+        void splay(node *cur)
+        {
+                if(cur->f==root)//zig
+                {
+                        if(root->l==cur)
+                        {
+                                rot_r(root);
+                        }
+                        else
+                        {
+                                rot_l(root);
+                        }
+                }
+                else if()
+        }
+
 }
