@@ -15,7 +15,7 @@
 #include<algorithm>
 #include<stack>
 #include<queue>
-#define PROB ""
+#define PROB "3224"
 using namespace std;
 inline void Read(int & x)
 {
@@ -47,30 +47,27 @@ struct splay_tree
         {
                 p->size=p->cnt+p->l>size+p->r->size;
         }
-        void rot_l(node *cur)
+        void rot_l(node *cur)//cur is which want to be higher
         {
-                node *temp=cur->r;
-                cur->r=temp->l;
-                cur->r->f=cur;
-                temp->l=cur;
-                if(root!=cur)
+                node *temp=cur->f;
+                temp->r=cur->l;
+                temp->r->f=temp;
+                if(root!=temp)
                 {
-                        if(cur!=cur->f->l)
+                        if(temp!=cur->f->l)//cur's parent is not the lchild of the cur's grand parent
                         {
-                                cur->f->r=temp;
-                                temp->f=cur->f;
+                                temp->f->r=cur;
+                                ->f=
                         }
                         else
                         {
-                                cur->f->l=temp;
-                                temp->f=cur->f;
+                                temp->f->l=cur;
                         }
                 }
-                else{root =temp; }
-                cur->f=temp;
-                update(cur);
-                update(cur->f);
-                return ;
+                else
+                {
+                        root=cur;
+                }
         }
         void rot_r(node *cur)
         {
@@ -79,7 +76,7 @@ struct splay_tree
                 temp->r=cur;
                 if(root!=cur)
                 {
-                        if(cur!=cir->f->l)
+                        if(cur!=cur->f->l)
                         {
                                 cur->f->r=temp;
                         }
@@ -111,7 +108,10 @@ struct splay_tree
                                 rot_l(root);
                         }
                 }
-                else if()
+                else if(cur->f->f->l==cur->f&&cur->f->l==cur)//zig zig both left
+                {
+                        
+                }
         }
 
 }
