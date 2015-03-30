@@ -3,27 +3,49 @@
 #include<vector>
 #include<cstdlib>
 using namespace std;
-vector <int> a;
+struct NODE
+{
+        int l,r,f,v;
+        NODE()
+        {
+                kl=r=f=v=0;
+        }
+`};
+const int maxn=100005;
+struct SPLAY
+{
+       int root,size;
+       NODE node[maxn];
+       SPLAY()
+       {
+                root=0;
+                size=-1;
+       }
+       void update(int pos)
+       {
+                int l=node[pos].l;
+                int r=node[pos].r;
+                node[pos].size=node[l].size+node[r].size+1;
+       }
+       void rot_r(int pos)
+       {
+                int  a=node[pos].l;
+                node[pos].l=node[]
+       }
+       void rot_l(int pos)//pos is the upper node's pos
+       {
+                                
+       }
+};
+SPLAY tree;
 int main()
 {
-	freopen("in.txt","r",stdin);
-	int n;
-	cin>>n;
-	int temp;
-	int ans=0;
-	while(cin>>temp)
-	a.push_back(temp);
-	for(int i=0;i<a.size();i++)
-	{
-		if(i==0) 
-		{
-		ans+=a[i];
-		continue;
-		}
-		else
-		{
-			ans+=abs(a[i]-a[0]);
-		}
-	}
-	cout<<ans;
+         int n;
+         int temp;
+         scanf("%d",&n);
+         while(~scanf("%d",temp))
+         {
+                tree.insert(temp);
+         }
+
 }

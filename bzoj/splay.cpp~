@@ -32,11 +32,11 @@ inline void Read(int & x)
 
 struct node{
 	node *l, *r, *f;
-	int size,v,cnt;
+	int size, v, cnt;
 	node()
 	{
 		l = r = f = NULL;
-		cnt = size = v = 0;
+		cnt = size = value = 0;
 	}
 };
 
@@ -135,11 +135,11 @@ struct splay_tree
 			}
 		}
 	}
-	void splay(node *cur, node * goal)
+	void splay(node *p, node * goal)
 	{
-		if (cur->v < goal->v)//at lchilde
+		if (p->v < goal->v)//at lchilde
 		{
-			while (cur != goal->l)
+			while (p != goal->l)
 			{
 				if (cur->f == goal)//zig
 				{
@@ -176,7 +176,7 @@ struct splay_tree
 		}
                 else 
                 {
-                        while (cur != goal->r)
+                        while (p != goal->l)
 			{
 				if (cur->f == goal)//zig
 				{
