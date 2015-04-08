@@ -13,14 +13,9 @@
 *.dylib
 *.dll
 *.o
-
 # I/O data
 *.in
 *.out
-
-#vim 
-*.swp
-
 # Fortran module files
 *.mod
 
