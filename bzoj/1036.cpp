@@ -60,14 +60,23 @@ struct DOT
 		vd.clear();
 	}
 };
+
+std::vector<int> link;
 bool deal[maxn];
+int tree_pos[maxn];
+int f[maxn];
+int n=1;
+int cnt=1;
+int temp=0;
 DOT dot[maxn];
 SEG seg[maxn];
+
 void init();
 void cut(int);
 void Seg_build(int,int,int);
-std::vector<int> link;
-int n;
+
+
+
 int main(int argc, char const *argv[])
 {
 	Read(n);
@@ -85,6 +94,7 @@ int main(int argc, char const *argv[])
 		dot[i+1].v=a;
 	}
 	init(pos);
+	cut(1);
 	Seg_build(1,1,n);
 	return 0;
 }
@@ -110,3 +120,19 @@ void init(int pos)
 	return ;
 }
 
+
+
+void cut(int cur_pos)
+{
+	if(deal[cur_pos])	return ;
+	dot[1].seg_pos=cnt;
+	tree_pos[cnt]=cur_pos;
+	deal[cur_pos]=true;
+	cnt++;
+	for(int i=0;i<dot[cur_pos].vd.size();i++)
+	{
+		temp=dot[cur_pos].vd[i];
+		if(deal[temp])	continue;
+		cut(temp);
+	}
+}
