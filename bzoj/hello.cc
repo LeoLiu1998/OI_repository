@@ -10,13 +10,13 @@
 #include <string>
 #include <cstdlib>
 #include <cmath>
-#include <algorithm>
+#include <algorithm> 
 const double pi=3.1415926535898;
 using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	cout<<"hello\n";
+	cout<<"hello\n";s
 	/* code */
 	return 0;
 }
