@@ -52,6 +52,7 @@
  2768: dinic
  2818: phi
  2986: 二分容斥
+ 3000: Stirling
  3093: Bayes
  3224: splay
  3323: splay
