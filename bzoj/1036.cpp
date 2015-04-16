@@ -67,7 +67,6 @@ struct DOT
 };
 
 SEG seg[maxn*4];
-std::vector<int> link;
 bool deal[maxn];
 int tree_pos[maxn];
 int f[maxn];
@@ -75,6 +74,7 @@ int n=1;
 int cnt=1;
 int temp=0;
 int LCA;
+int fa,fb;
 DOT dot[maxn];
 //SEG seg[maxn];
 bool done=true;
@@ -92,6 +92,7 @@ int main(int argc, char const *argv[])
 {
 	#ifndef ONLINEJUDGE
 	freopen("1036.in","r",stdin);
+	freopen("1036.out","w",stdout);
 	#endif
 
 	Read(n);
@@ -116,7 +117,7 @@ int main(int argc, char const *argv[])
 	Read(M);
 	while(M--)
 	{
-		cout<<M<<endl;
+		//cout<<M<<endl;
 		scanf("%s",manu);
 		Read(a);
 		Read(b);
@@ -185,7 +186,6 @@ void cut(int cur_pos)
 	for(int i=0;i<dot[cur_pos].vd.size();i++)
 	{
 		temp=dot[cur_pos].vd[i];
-		//if(temp==0)	cout<<cur_pos<<"!"<<endl;
 		if(deal[temp])	continue;
 		cut(temp);
 	}
@@ -252,43 +252,17 @@ void Query_sum(int a,int b)
 	ans=0;
 	if(f[a]==f[b])
 	{
-		printf("%d\n",Seg_sum(1,dot[a].seg_pos,dot[b].seg_pos));
-		return ;
-	}
-	int b_cur=b;
-	int LCA_son;
-	if(dot[f[a]].depth<dot[f[b]].depth)
-	{
-		LCA=f[a];
-		ans+=Seg_sum(1,dot[f[a]].seg_pos,dot[a].seg_pos);
-		while(f[b_cur]!=LCA)
-		{
-			ans+=Seg_sum(1,dot[LCA].seg_pos,dot[f[b_cur]].seg_pos);
-			b_cur=dot[f[b_cur]].parent;
-		}
-		LCA_son=b_cur;
-		while(dot[LCA_son].parent!=LCA)
-		{
-			LCA_son=dot[LCA_son].parent;
-		}
-		ans+=Seg_sum(1,dot[b_cur].seg_pos,dot[LCA_son].seg_pos);
+		ans= Seg_sum(1,dot[a].seg_pos,dot[b].seg_pos);
 	}
 	else
 	{
-		int a_cur=a;
-		LCA=f[b];
-		ans+=Seg_sum(1,dot[f[b]].seg_pos,dot[b].seg_pos);
-		while(f[b_cur]!=LCA)
+		while(f[a]!=f[b])
 		{
-			ans+=Seg_sum(1,dot[LCA].seg_pos,dot[f[b_cur]].seg_pos);
-			a_cur=dot[f[a_cur]].parent;
+			if(dot[f[a]].depth<dot[f[b]].depth)	swap(a,b);// make sure a is deepest
+			ans+=Seg_sum(1,dot[a].seg_pos,dot[f[a]].seg_pos);
+			a=dot[f[a]].parent;
 		}
-		LCA_son=a_cur;
-		while(dot[LCA_son].parent!=LCA)
-		{
-			LCA_son=dot[LCA_son].parent;
-		}
-		ans+=Seg_sum(1,dot[a_cur].seg_pos,dot[LCA_son].seg_pos);
+		ans+=Seg_sum(1,dot[a].seg_pos,dot[b].seg_pos);
 	}
 	printf("%d\n",ans);
 }
@@ -298,50 +272,24 @@ void Query_max(int a,int b)
 	ans=0;
 	if(f[a]==f[b])
 	{
-		printf("%d\n",Seg_max(1,dot[a].seg_pos,dot[b].seg_pos));
-		return ;
-	}
-	int b_cur=b;
-	int LCA_son;
-	if(dot[f[a]].depth<dot[f[b]].depth)
-	{
-		LCA=f[a];
-		cout<<"smg"<<endl;
-		max(ans,Seg_max(1,dot[f[a]].seg_pos,dot[a].seg_pos));
-		while(f[b_cur]!=LCA)
-		{
-			max(ans,Seg_max(1,dot[LCA].seg_pos,dot[f[b_cur]].seg_pos));
-			b_cur=dot[f[b_cur]].parent;
-		}
-		LCA_son=b_cur;
-		while(dot[LCA_son].parent!=LCA)
-		{
-			LCA_son=dot[LCA_son].parent;
-		}
-		max(ans,Seg_max(1,dot[b_cur].seg_pos,dot[LCA_son].seg_pos));
+		ans= max(ans,Seg_max(1,dot[a].seg_pos,dot[b].seg_pos));
 	}
 	else
 	{
-		int a_cur=a;
-		LCA=f[b];
-		max(ans,Seg_max(1,dot[f[b]].seg_pos,dot[b].seg_pos));
-		while(f[b_cur]!=LCA)
+		while(f[a]!=f[b])
 		{
-			max(ans,Seg_max(1,dot[LCA].seg_pos,dot[f[b_cur]].seg_pos));
-			a_cur=dot[f[a_cur]].parent;
+			if(dot[f[a]].depth<dot[f[b]].depth)	swap(a,b);// make sure a is deepest
+			ans=max(ans,Seg_max(1,dot[a].seg_pos,dot[f[a]].seg_pos));
+			a=dot[f[a]].parent;
 		}
-		LCA_son=a_cur;
-		while(dot[LCA_son].parent!=LCA)
-		{
-			LCA_son=dot[LCA_son].parent;
-		}
-		max(ans,Seg_max(1,dot[a_cur].seg_pos,dot[LCA_son].seg_pos));
+		ans=max(ans,Seg_max(1,dot[a].seg_pos,dot[b].seg_pos));
 	}
 	printf("%d\n",ans);
 }
 
 void Modify(int a,int b)
 {
+	dot[a].v=b;
 	Seg_modify(1,dot[a].seg_pos,b);
 	return ;
 }
