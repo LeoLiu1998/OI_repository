@@ -50,7 +50,7 @@ struct SEG
 			ret.num-- ;
 		ret.l=l;
 		ret.r=a.r;
-		ret.m=(l+r)>>1;
+		ret.m=(ret.l+ret.r)>>1;
 		return ret;
 	}
 };
@@ -58,7 +58,7 @@ char manu;
 DOT dot[maxn];
 SEG seg[4*maxn];
 bool deal[maxn],done=true;
-int n,cnt,M,a,b,cur_depth,cur,heavy_child_size=-1,cur_father,tree_pos[maxn];
+int n,cnt=1,M,a,b,cur_depth=1,cur,cur_father,tree_pos[maxn];
 
 void cut(int);
 void init(int);
@@ -70,7 +70,6 @@ int main(int argc, char const *argv[])
 	#ifndef ONLINEJUDGE
 	freopen("2243.in","r",stdin);
 	#endif
-	cout<<"WTF\n";
 	Read(n);
 	Read(M);
 	for(int i=1;i<=n;++i)
@@ -79,17 +78,17 @@ int main(int argc, char const *argv[])
 	{
 		Read(a);
 		Read(b);
-
 		dot[a].vd.push_back(b);
 		dot[b].vd.push_back(a);
 	}
-	
 	init(1);
-
 	memset(deal,false,sizeof(deal));
 	cut(1);
 	Seg_build(1,1,n);
-	
+	for (int i = 1; i <=n; ++i)
+	{
+		cout<<dot[i].f<<"\n";
+	}
 	while(M--)
 	{
 		manu=getchar();
@@ -99,10 +98,12 @@ int main(int argc, char const *argv[])
 			case'C':Read(a);
 				Read(b);
 				Read(cur);
+				cout<<"C\n";
 				Modify(a,b,cur);
 				break;
 			case'Q':Read(a);
 				Read(b);
+				cout<<"Q\n";
 				Query(a,b);
 		}
 	}
@@ -114,15 +115,18 @@ SEG Seg_query(int,int,int);
 
 void init(int pos)
 {
-	if(deal[pos])	return;
+	int cur;
+	cur_depth++;
 	deal[pos]=true;
 	dot[pos].depth=cur_depth;
 	dot[pos].size=1;
-	heavy_child_size=-1;
+	int heavy_child_size=-1;	
 	for (int i = 0; i < dot[pos].vd.size(); ++i)
 	{
 		cur=dot[pos].vd[i];
 		if(deal[cur])	continue;
+		
+		//cout<<pos<<" "<<cur<<endl;
 		dot[cur].parent=pos;
 		init(cur);
 		dot[pos].size+=dot[cur].size;
@@ -130,7 +134,7 @@ void init(int pos)
 		{
 			heavy_child_size=dot[cur].size;
 			dot[pos].heavy_child=cur;
-		}
+		}	
 	}
 	cur_depth--;
 	return ;
