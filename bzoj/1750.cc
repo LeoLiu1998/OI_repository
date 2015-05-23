@@ -1,0 +1,44 @@
+/**************************************************************
+    Problem: 1750
+    User: yeguanghao
+    Language: C++
+    Result: Accepted
+    Time:8 ms
+    Memory:8640 kb
+****************************************************************/
+ 
+#include<cstdio>
+inline int max(int a,int b)
+{return a>b?a:b;}
+inline int read()
+{
+    int x=0,f=1;char ch=getchar();
+    while(ch<'0'||ch>'9'){if(ch=='-')f=-1;ch=getchar();}
+    while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
+    return x*f;
+}
+int n,m,mx;
+int f[1001][1001][2];//Ç° i ¸ö¡¢ÒÆ¶¯ j ²½¡¢µ±Ç°Î»ÖÃÊÇ1/2
+int a[1001][2];
+int main()
+{
+    scanf("%d%d",&n,&m);
+    for (int i=1;i<=n;i++)
+    {
+        int x=read();
+        a[i][x-1]=1;
+    }
+    for (int i=1;i<=n;i++)
+    {
+      f[i][0][0]=f[i-1][0][0]+a[i][0];
+      f[i][0][1]=f[i-1][0][1]+a[i][1];
+      for (int j=1;j<=m;j++)
+        {
+            f[i][j][0]=max(f[i-1][j-1][1],f[i-1][j][0])+a[i][0];
+            f[i][j][1]=max(f[i-1][j-1][0],f[i-1][j][1])+a[i][1];
+            mx=max(mx,f[i][j][0]);
+            mx=max(mx,f[i][j][1]);
+        }
+    }
+    printf("%d\n",mx);
+}cc
