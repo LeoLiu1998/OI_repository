@@ -1,0 +1,10 @@
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#define R(x) scanf("%d",&x)
+#define P(x) printf("%d\n",x)
+int main()
+{
+
+}
+
