@@ -8,7 +8,10 @@
 !*/
  
 ### Above combination will ignore all files without extension ###
- 
+# Ignore vim temp files
+*.swp
+*~
+
 # Ignore files with extension `.class` & `.sm`
 *.class
 *.sm
