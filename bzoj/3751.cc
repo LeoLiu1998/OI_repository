@@ -12,7 +12,7 @@ inline void R(int &x) {
 }
 const int maxn=105;
 int n,m;
-int prime[5]={89119,820649,169607,1805677,20587547};
+int prime[5]={89119,74323,9607,20507,20719};
 int a[maxn][5];
 void get(int k) {
 	int f=1; char ch=getchar();
@@ -30,10 +30,42 @@ void get(int k) {
 		}
 	}
 }
-
+const int maxm=100500;
+int mem[maxm][5];
+bool solve(int cur_ans,int prime_pos) {
+	if(mem[cur_ans][prime_pos]!=-1)
+		return mem[cur_ans][prime_pos];
+	long long cur_result=0;
+	int cur_prime=prime[prime_pos];
+	for(int i=n;i>=0;--i) {
+		cur_result+=a[i][prime_pos];
+		if(i!=0)
+			cur_result*=cur_ans;
+		cur_result%=cur_prime;
+	}
+	cur_result%=cur_prime;
+	return  mem[cur_ans][prime_pos]=(cur_result==0) ;
+}
 int main() {
 	R(n); R(m);
 	rep(i,0,n,1) {
 		get(i);
+	}
+	memset(mem,-1,sizeof(mem));
+	vector<int> ans;
+	rep(i,0,m,1) {
+	//	if(clock()>=950*CLOCKS_PER_SEC) break;
+		rep(j,0,4,1) {
+			if(!solve(i%prime[j],j)){
+				goto next;
+			}
+		}
+		ans.push_back(i);
+next:
+		continue;
+	}
+	Pn(int(ans.size()));
+	rep(i,0,ans.size()-1,1) {
+		Pn(ans[i]);
 	}
 }
