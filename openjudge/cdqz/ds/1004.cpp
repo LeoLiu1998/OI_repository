@@ -43,7 +43,7 @@ const int maxn=100050;
 Seg seg[maxn<<2];
 ll a[maxn];
 Seg Merge(Seg sl,Seg sr) {
-	assert(sl.r+1==sr.l);
+	//assert(sl.r+1==sr.l);
 	Seg ret=Seg(sl.l,sr.r,(sl.sqr+sr.sqr)%Kmod,0,(sl.sum+sr.sum)%Kmod);
 	ret.mul=(sl.mul+sr.mul)%Kmod;
 	ret.mul+=a[sl.r]*a[sr.l];
@@ -53,14 +53,14 @@ Seg Merge(Seg sl,Seg sr) {
 
 void Build(int sp,int l,int r) {
 	if(l==r) {
-		seg[sp]=Seg(l,r,a[l]*a[l],0,a[l]);
+		seg[sp]=Seg(l,r,(a[l]*a[l])%Kmod,0,a[l]);
 		return ;
 	}
 	Build(sp<<1,l,(l+r)>>1);
 	Build(sp<<1|1,((l+r)>>1)+1,r);
 	seg[sp]=Merge(seg[sp<<1],seg[sp<<1|1]);
 }
-void Modify(int sp,int pos, int v) {
+void Modify(int sp,int pos, ll v) {
 	if(seg[sp].l==seg[sp].r&&seg[sp].l==pos) {
 		a[pos]=v;
 		seg[sp]=Seg(pos,pos,(v*v)%Kmod,0,v);
@@ -82,31 +82,42 @@ Seg getSeg(int sp,int l,int r) {
 	Seg sr=getSeg(sp<<1|1,mid+1,r);
 	return Merge(sl,sr);
 }
+void Mod(ll &num) {
+	if(num<0){
+		num+=((-num)/Kmod+1)*Kmod;
+		return ;
+	}
+	num%=Kmod;
+	return ;
+}
 void QuerySqr(int sp,int l,int r) {
 	Seg sg=getSeg(sp,l,r);
 	ll ans=sg.sum*sg.sum;
 	ans-= sg.sqr;
+	//assert(!(ans&1));
 	ans%=Kmod;
-	assert(!(ans&1));
-	ans>>=1;
+	ans*=500000004;
+	Mod(ans);
 	Pn(ans);
 }
 void QueryMul(int sp,int l,int r){
 	Seg sg=getSeg(sp,l,r);
 	ll ans=0;
 	ans=sg.mul;
+	Mod(ans);
 	Pn(ans);
 }
 int main() {
 	R(n); R(m);
-	rep(i,1,n,1) R(a[i]);
+	rep(i,1,n,1) {R(a[i]);a[i]%=Kmod;}
 	Build(1,1,n);
 	char cmd;
 	while(m--) {
 		cmd=0;
 		while(!isalpha(cmd)) cmd=getchar();
 		if(cmd=='M') {
-			int pos,v;
+			int pos;
+			ll v;
 			R(pos); R(v);
 			Modify(1,pos,v);
 		} else if(cmd=='Q'){
