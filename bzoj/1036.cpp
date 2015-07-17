@@ -52,7 +52,6 @@ struct SEG
 };
 struct DOT
 {
-	bool use;
 	int size;
 	int parent;
 	int heavy_child;

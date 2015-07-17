@@ -1,8 +1,8 @@
 export CXX="clang++"
 export CXXFLAGS="-Wall -Wextra -g3 -DYGHDEBUG"
-name=1208
-bname=1208_b
-gen_name=1208_gen.py
+name=2748
+bname=2748_b
+gen_name=2748_gen.py
 make $name 
 make $bname
 for i in {1..100}:

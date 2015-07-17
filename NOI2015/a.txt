@@ -1,0 +1,2 @@
+clang++ -Wall -Wextra -g3    manager_b.cc   -o manager_b
+<builtin>: recipe for target 'manager_b' failed
