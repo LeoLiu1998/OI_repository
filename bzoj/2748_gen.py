@@ -1,7 +1,7 @@
 from random import randint
 m=randint(5,6)
 n=randint(5,6)
-ma=randint(600,900);
+ma=randint(600,1000);
 print n,randint(1,ma),ma
 for i in range(n):
 	print randint(1,ma),
