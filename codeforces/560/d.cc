@@ -11,34 +11,36 @@ inline void R(int &x) {
 	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
 	x*=f;
 }
-struct String{
-	int a[26];
-	String(){
-		memset(a,0,sizeof(a));
-	}
-};
-const int maxn=200005;
-char s1[maxn],s2[maxn];
-//String str[2][maxn];
-int len;
-bool check(int as,int ae,int bs,int be) {
-	int flag=1;
-	for(int i=as,j=bs;i<=ae&&j<=be;++i,++j) {
-		if(s1[i]!=s2[j]){
-			flag=0; break;
+const int maxn=200434;
+char str[2][maxn];
+int len[2];
+void solve(int k,int s,int e) {
+	int l=e-s+1;
+	if(l&1) return;
+	int half=l/2;
+	int s1=s,s2=s+half;
+	solve(k,s,s+half-1);
+	solve(k,s+half,e);
+	for(int i=1;i<=l;++i,s1++,s2++) {
+		if(str[k][s1]<str[k][s2]) return ;
+		else if(str[k][s1]>str[k][s2]) {
+			for(int j=s;j<s+half;++j) {
+				swap(str[k][j],str[k][j+half]);
+			}
+			return ;
 		}
 	}
-	if(flag) return 1;
-	if((ae-as+1)&1) return 0;
-	int am=(as+ae)>>1;
-	int bm=(bs+be)>>1;
-	return (check(as,am,bm+1,be)&&check(am+1,ae,bs,bm));
 }
 int main() {
-	scanf("%s",s1); scanf("%s",s2); len=strlen(s1);
-	if(check(0,len-1,0,len-1)) {
-		puts("YES");
-	} else {
-		puts("NO");
-	}
+	scanf("%s",str[0]);
+	scanf("%s",str[1]);
+	len[0]=strlen(str[0]);
+	len[1]=strlen(str[1]);
+	solve(0,0,len[0]-1);
+	solve(1,0,len[1]-1);
+	 if(!strcmp(str[0],str[1])){
+	 	puts("YES");
+	 } else  {
+	 	puts("NO");
+	 }
 }
