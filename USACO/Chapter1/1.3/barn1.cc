@@ -28,7 +28,10 @@ int x;
 int main() {
 	Redirect();
 	R(k); R(len); R(n);
-	k=min(k,n-1);
+	if(k>=n) {
+        	Pn(n);
+        	return 0;
+	}
 	for(int i=1;i<=n;++i) {
 		R(x); a.pb(x);
 	}
