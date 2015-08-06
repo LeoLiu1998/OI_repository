@@ -1,5 +1,5 @@
 from random import randint
-m=randint(490000,500000)
+m=randint(100000,150000)
 n=randint(190000,200000)
 print n,m
 for i in range(m):

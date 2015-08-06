@@ -1,5 +1,13 @@
-#include <bits/stdc++.h>
-#define rep(name,start,end,step) for(int name=start;name<=end;name+=step)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+  
+using namespace std;
+  
+#include <algorithm>
+  
+typedef unsigned long long lli;
 using namespace std;
 #define Pn(x) printf("%d\n",x)
 #define Ps(x) printf("%d ",x)
@@ -9,51 +17,62 @@ inline void R(int &x) {
 	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
 	x*=f;
 }
-const int maxn=200050;
-int next[maxn];int n,m;
-int f[maxn];
-void init(){
-	for(int i=1;i<=n;++i){
-		f[i]=i;
-		next[i]=i+1;
-	}
-}
-int getf(int x) {
-	if(f[x]==x) return x;
-	f[x]=getf(f[x]);
-	return f[x];
-}
-inline void Merge(int x,int y) {
-	int fx=getf(x),fy=getf(y);
-	f[fx]=f[fy]=min(fx,fy);
-}
-inline void MergeS(int l,int r) {
-	if(l>r) swap(l,r);
-	for(int i=l+1;i<=r;) {
-		Merge(i-1,i);
-		int k=next[i];
-		next[i]=max(next[i],r);
-		i=k;
-	}
-}
-void Query(int x,int y) {
-	int fx=getf(x); int fy=getf(y);
-	printf(fx==fy ? "YES\n" : "NO\n");
-	return ;
+
+int sets[200010], end[200010], rank[200010];
+
+inline int findSet(int i) { 
+    if( sets[i] == i ) return i;
+
+    return sets[i] = findSet( sets[i] ); 
 }
 
-int main() {
-	R(n); R(m);
-	init();
-	int cmd,x,y;
-	while(m--) {
-		R(cmd); R(x); R(y);
-		if(cmd==1) {
-			Merge(x,y);
-		} else if(cmd==2) {
-			MergeS(x,y);
-		} else {
-			Query(x,y);
-		}
- 	}
+inline void unionSet(int i, int j) { 
+    int ri = findSet(i);
+    int rj = findSet(j);
+    sets[ri]=sets[rj]=min(ri,rj);
+}
+
+bool isSameSet(int i, int j) { 
+    return findSet(i) == findSet(j); 
+}
+ 
+int main(void){
+  
+    int n, q;
+    R(n); R(q);//scanf("%d %d", &n, &q );
+    for( int i = 1; i <= n; i++ ){
+        sets[i] = end[i] = i;
+    }
+    int t, x, y;
+    while(q--){
+        //scanf("%d %d %d", &t, &x, &y );
+	R(t); R(x); R(y);
+	if( t == 1 ){
+            unionSet(x,y);
+        }
+        else if( t == 2 ){
+            int mi=min(x,y);
+	    int ma=max(x,y);
+	    x=mi;
+	    y=ma;
+		int xs = findSet(x);
+            for( int i = x+1; i <= y; ){
+                int k=end[i];
+		end[i] = max(end[i],y);
+                unionSet(xs,i);
+                i = max(k+1,i+1);
+            }
+        }
+        else{
+            //printf("%s\n", isSameSet(x,y) ? "YES" : "NO" );     
+            if(isSameSet(x,y)) {
+            	puts("YES");
+	    } else {
+	    	puts("NO");
+	    }
+	}
+    }
+    
+      
+    return 0;
 }

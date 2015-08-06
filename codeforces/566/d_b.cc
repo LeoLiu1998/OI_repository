@@ -14,7 +14,8 @@ int next[maxn];int n,m;
 int f[maxn];
 void init(){
 	for(int i=1;i<=n;++i){
-		next[i]=f[i]=i;
+		f[i]=i;
+		next[i]=i+1;
 	}
 }
 int getf(int x) {
@@ -28,8 +29,11 @@ inline void Merge(int x,int y) {
 }
 inline void MergeS(int l,int r) {
 	if(l>r) swap(l,r);
-	for(int i=l+1;i<=r;++i) {
+	for(int i=l+1;i<=r;) {
 		Merge(i-1,i);
+		int k=next[i];
+		next[i]=max(next[i],r);
+		i=k;
 	}
 }
 void Query(int x,int y) {

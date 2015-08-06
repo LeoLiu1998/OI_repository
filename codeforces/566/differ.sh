@@ -5,7 +5,7 @@ bname=d_b
 gen_name=d_gen.py
 make $name 
 make $bname
-for i in {1..100}:
+for i in {1..1000}:
 do
 	python $gen_name>$name.in
 	./$name < $name.in>$name.out
