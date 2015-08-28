@@ -27,10 +27,30 @@ inline void  R(int &x)
 int n,l,r,x;
 int a[20];
 bool use[20];
-void dfs(int num,int sum,int k,int ma,int mi);
+int ans=0;
+#define lowbit(x) ((x)&(-x))
+int v[1<<16];
+bool check(int k) {
+	int sum=0;
+	int ma=-54564156,mi=52146546;
+	while(k) {
+		int cur=v[lowbit(k)];	
+		sum+=a[cur];
+		ma=max(ma,a[cur]);
+		mi=min(mi,a[cur]);
+		k-=lowbit(k);
+	}
+	return sum<=r&&sum>=l&&(ma-mi>=x);
+}
 int main()
 {
 	R(n); R(l); R(r); R(x);
 	for(int i=1;i<=n;++i) R(a[i]);
-	dfs
+	for(int i=0;i<=n;++i) {
+		v[1<<i]=i+1;
+	}
+	for(int i=0;i<=(1<<n)-1;++i){
+		ans+=check(i);
+	}
+	P(ans);
 }
