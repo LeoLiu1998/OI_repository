@@ -1,0 +1,6 @@
+from random import randint
+n=randint(5,6)
+print n
+for i in range(n):
+	l=randint(1,100);
+	print l
