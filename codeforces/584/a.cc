@@ -13,17 +13,24 @@ inline void R(int &x) {
 	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
 	x*=f;
 }
-const int maxn=50;
-bool v[maxn+1];
-bool h[maxn+1];
 int n;
+int t;
 int main() {
 	R(n);
-	for(int i=1,a,b;i<=n*n;++i) {
-		R(a); R(b);
-		if(h[a]==0&&v[b]==0) {
-			h[a]=v[b]=1;
-			Ps(i);
+	R(t);
+	if(n==1&&t==10) {
+		Pn(-1);
+		return 0;
+	} 
+	if(t==10) {
+		printf("1");
+		n--;
+		while(n--) {
+			printf("%d",0);
 		}
+		return 0;
+	}
+	while(n--) {
+		printf("%d",t);
 	}
 }

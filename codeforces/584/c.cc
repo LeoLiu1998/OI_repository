@@ -13,53 +13,57 @@ inline void R(int &x) {
 	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
 	x*=f;
 }
-const int maxn=505;
-int a[maxn*maxn];
-map<int,int> fre;
-int n;
-vector<int> ans;
-map<int,int>::iterator mit;
-inline void check() {
-	if(mit->second==0) {
-		fre.erase(mit);
-	}
+const int maxn=1e5+3;
+int cnt;
+char solve(char a,char b) {
+	if('b'!=a&&'b'!=b) return 'b';
+	if('a'!=a&&'a'!=b) return 'a';
+	if('z'!=a&&'z'!=b) return 'z';
+	
 }
-int gcd(int a,int b) {
-	if(a%b==0) return b;
-	return gcd(b,a%b);
-}
-void g_remove(int a,int b) {
-	int gc=gcd(a,b);
-	fre[gc]-=2;
-	mit=fre.find(gc);
-	check();
-}
+char s1[maxn],s2[maxn];
+
 int main() {
-	R(n);
-	for(int i=1;i<=n*n;++i) {
-		R(a[i]);
-		fre[a[i]]++;
+	int n,t;
+	R(n); R(t);
+	t=n-t;
+	scanf("%s%s",s1+1,s2+1);
+	rep(i,1,n,1) {
+		cnt+=(s1[i]==s2[i]);
 	}
-	mit=fre.end();
-	mit--;
-	ans.pb((*mit).first);
-	mit->second--;
-	check();
-	while(ans.size()!=n) {
-		mit=fre.end();
-		mit--;
-		int cur=mit->first;
-		mit->second--;
-		check();
-		for(int i=0;i<(int)ans.size();++i) {
-			g_remove(cur,ans[i]);
+	if(t<=cnt) {
+		rep(i,1,n,1) {
+			if(s1[i]==s2[i] &&t > 0) {
+				printf("%c",s1[i]);
+				t--;
+			} else {
+				printf("%c",solve(s1[i],s2[i]));
+			}
 		}
-		ans.pb(cur);
+		return 0;
+	} else  {
+		int temp=t-cnt;
+		int pos=0;
+		if(n-cnt<temp*2 ) {
+			Pn(-1); return 0;
+		}
+		rep(i,1,n,1) {
+			if(s1[i]!=s2[i] && pos<2) {
+				temp--;
+				if(!pos) printf("%c",s1[i]);
+				else printf("%c",s2[i]);
+				if(!temp) {
+					pos+=1;
+					temp=t-cnt;
+				}
+			} else {
+				if(s1[i]==s2[i]) {
+					printf("%c",s1[i]);
+				} else {
+					printf("%c",solve(s1[i],s2[i]));
+				}
+			}
+		}
+		return 0;
 	}
-	for(int i=0;i<(int)ans.size();++i) {
-		Ps(ans[i]);
-	}
-	puts("");
 }
-
-

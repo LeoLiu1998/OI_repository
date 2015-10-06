@@ -14,10 +14,3 @@ inline void R(int &x) {
 	x*=f;
 }
 
-int n;
-vector <int> ans;
-int main() {
-	R(n);
-	ans.pb(2);
-	n-=2;
-}

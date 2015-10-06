@@ -13,37 +13,24 @@ inline void R(int &x) {
 	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
 	x*=f;
 }
-
-const int maxn=1000;
-int a[maxn];
-bool have[maxn];
-int n;
-int cur_pi;
-int ans=0;
+typedef long long ll;
+ll ans=0;
+const ll mod=1e9+7;
 int main() {
+	int n;
 	R(n);
+	int cur=1;
+	for(int i=1;i<=3*n;++i) {
+		cur*=3;
+		cur%=mod;
+	}
+	ans+=cur;
+	cur=1;
 	for(int i=1;i<=n;++i) {
-		R(a[i]);
+		cur*=7;
+		cur%=mod;
 	}
-	while(cur_pi!=n) {
-		if((ans&1)==0) {
-			for(int i=1;i<=n;++i) {
-				if(cur_pi>=a[i]&&(!have[i])) {
-					cur_pi++;
-					have[i]=1;
-				}
-			}
-		} else {
-			for(int i=n;i>=1;--i) {
-				if(cur_pi>=a[i]&&(!have[i])) {
-					cur_pi++;
-					have[i]=1;
-				}
-			}
-		
-		}
-		if(cur_pi==n) break;
-		ans++;
-	}
-	Pn(ans);
+	ans-=cur;
+	while(ans<0) ans+=cur;
+	cout<<ans<<endl;
 }
