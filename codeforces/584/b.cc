@@ -31,6 +31,6 @@ int main() {
 		cur%=mod;
 	}
 	ans-=cur;
-	while(ans<0) ans+=cur;
+	while(ans<0) ans+=mod;
 	cout<<ans<<endl;
 }
