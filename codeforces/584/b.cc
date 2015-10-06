@@ -16,21 +16,22 @@ inline void R(int &x) {
 typedef long long ll;
 ll ans=0;
 const ll mod=1e9+7;
+long long qpow(long long a, long long b, long long c)
+{
+    long long ans=1;
+    a=a%c;
+    while(b>0)
+    {
+        if(b&1) ans=(ans*a)%c;
+        b>>=1;
+        a=(a*a)%c;
+    }
+    return ans;
+}
 int main() {
 	int n;
 	R(n);
-	int cur=1;
-	for(int i=1;i<=3*n;++i) {
-		cur*=3;
-		cur%=mod;
-	}
-	ans+=cur;
-	cur=1;
-	for(int i=1;i<=n;++i) {
-		cur*=7;
-		cur%=mod;
-	}
-	ans-=cur;
-	while(ans<0) ans+=mod;
-	cout<<ans<<endl;
+	int cura=qpow(3,3*n,mod);
+	int curb=qpow(7,n,mod);
+	cout<<(cura-curb+mod)%mod<<endl;
 }
