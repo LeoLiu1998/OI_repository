@@ -15,7 +15,7 @@ inline void R(int &x) {
 }
 
 typedef unsigned long long LL;
-const int S=10; 
+const int S=25; 
 LL modular_multi(LL x,LL y,LL mo)
 {
 	LL t;
@@ -34,8 +34,8 @@ LL modular_exp(LL num,LL t,LL mo)
 			ret=modular_multi(ret,temp,mo);
 	return ret;
 }
- 
-bool miller_rabbin(LL n)
+bool sqrt_prime(LL);
+bool miller_rabbin(const LL &n)
 {
 	if (n==2)return true;
 	if (n<2||!(n&1))return false;
@@ -56,7 +56,13 @@ bool miller_rabbin(LL n)
 		if (x!=1)///根据费马小定理,若n是素数，有a^(n-1)≡1(mod n).因此n不可能是素数
 			return false;
 	}
-	return true;
+	return sqrt_prime(n);
+}
+bool sqrt_prime(LL a) {
+	for(LL i=2;i*i<=a;++i) {
+		if(a%i==0) return 0;
+	}
+	return 1;
 }
 vector<LL> ans;
 LL a;
