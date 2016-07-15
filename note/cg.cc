@@ -26,9 +26,9 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
-const int Eps=1e-7;
+const double Eps=1e-6;
 int Sign(double x) {
-	if(fabs(x)<Eps) return 0;
+	if(fabs(x)<=Eps) return 0;
 	return x>0?1:-1;
 }
 struct Point{
@@ -53,11 +53,18 @@ struct Point{
 bool toLeft(Point a, Point b, Point x) {
 	return ((b-a)^(x-a)) > 0;
 }
+bool sameLine(Point a, Point b, Point x) {
+	return ((b-a)^(x-a))==0;
+}
 bool inTriangle(Point a, Point b, Point c, Point x) {
 	bool abL=toLeft(a,b,x);
 	bool bcL=toLeft(b,c,x);
 	bool caL=toLeft(c,a,x);
 	return (abL==bcL)&&(bcL==caL);
+}
+double Distance(Point a, Point b) {
+	Point c=a-b;
+	return hypot(c.x,c.y);
 }
 Point origin(0,0);
 const int maxn=100050;
@@ -149,6 +156,64 @@ vector<Point> incrementalConstruct(int size,Point p[]) {
 	}
 	return ret;
 }
+int LTL(int size, Point p[]) {// low then left
+	int ret=1;
+	for(int i=2;i<=size;++i) {
+		if(p[i].y<p[ret].y) {
+			ret=i;
+		} else if(p[i].y==p[ret].y&&p[i].x<p[ret].x) {
+			ret=i;
+		}
+	}
+	return ret;
+}
+vector<Point> javisMarch(int size, Point p[]) {
+	int ltl=LTL(size,p); vector<Point> ret;
+	ret.pb(p[ltl]);
+	do {
+		int next=0;
+		for(int i=1;i<=size;++i) {
+			if(ret.back()==p[i]) continue;
+			if((!next)||(!(toLeft(ret.back(),p[next],p[i])||sameLine(ret.back(),p[next],p[i]))))	
+				next=i;
+			else if(sameLine(ret.back(),p[next],p[i])) {
+				if(Distance(p[i],ret.back())>Distance(p[next],ret.back()))
+					next=i;
+			}
+		}
+		if(next==ltl) break;
+		ret.pb(p[next]);
+	}while(1);
+	return ret;
+}
+Point rorigin;
+bool cmpa(Point a, Point b) {
+	return toLeft(rorigin,a,b);
+}
+vector<Point> grahamScan(int size,Point p[]) {
+	int ltl=LTL(size,p);
+	rorigin=p[ltl];
+	vector<Point> temp;
+	for(int i=1;i<=size;++i) {
+		if(i!=ltl) {
+			temp.pb(p[i]);
+		}
+	}
+	sort(temp.begin(),temp.end(),cmpa);
+	vector<Point> ret; ret.pb(p[ltl]);
+	for(int i=0;i<temp.size();++i) {
+		if(ret.size()<2) {ret.pb(temp[i]); continue; }
+		if(toLeft(ret[ret.size()-2],ret[ret.size()-1],temp[i])) {
+			ret.pb(temp[i]);
+		} else {
+			while(ret.size()>=2&&(!toLeft(ret[ret.size()-2],ret[ret.size()-1],temp[i]))) {
+				ret.erase(--ret.end());
+			}
+			ret.push_back(temp[i]);
+		}
+	}
+	return ret;
+}
 double Circum(vector<Point> p) {
 	double ret=0;
 	for(int i=1;i<p.size();++i) {
@@ -165,7 +230,7 @@ int main() {
 		scanf("%lf%lf",&point[i].x,&point[i].y);
 	}
 	n=unique(point+1,point+n+1)-point-1;
-	double ans=Circum(incrementalConstruct(n,point));
+	double ans=Circum(grahamScan(n,point));
 	printf("%.1lf\n",ans);
 }
 
