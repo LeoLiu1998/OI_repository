@@ -1,0 +1,123 @@
+//This sourcecode is under GPLv3
+//http://yeguanghao.xyz
+#include <bits/stdc++.h>
+#define rep(name,start,end,step) for(int name=start;name<=end;name+=step)
+using namespace std;
+#define Pn(x) printf("%d\n",x)
+#define Ps(x) printf("%d ",x)
+#define mp make_pair
+#define pb push_back
+#define fi first
+#define se second
+#define PROB
+inline void R(int &x) {
+	x=0; int f=1; char ch=getchar();
+	while(ch<'0'||ch>'9') {if(ch=='-')f=-1; ch=getchar();}
+	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
+	x*=f;
+}
+inline void R(long long &x) {
+	x=0; int f=1; char ch=getchar();
+	while(ch<'0'||ch>'9') {if(ch=='-')f=-1; ch=getchar();}
+	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
+	x*=f;	
+}
+void Redirect() {
+	freopen(PROB".in","r",stdin);
+#ifndef YGHDEBUG
+	freopen(PROB".out","w",stdout);
+#endif
+}
+typedef long long ll;
+typedef unsigned long long ull;
+typedef pair<ll,ll> pii;
+typedef pair<ll,ll> pll;
+int k,n;
+pii stone[10];
+pii monster[1050];
+pair<pii,int>  new_mon[1050];
+bool kil[1050];
+ll perm[10];
+ll ans[1005];
+pii cur_pos;
+pii operator - (const pii &a,const pii &b) {
+	pii ret;
+	ret.fi=a.fi-b.fi;
+	ret.se=a.se-b.se;
+	return ret;
+}
+inline long long dis2(pii a) {
+	return (ll)a.fi*a.fi+(ll)a.se*a.se;
+}
+inline int Quardant(pii a) {
+	if(a.fi>=0&&a.se>0) return 1;
+	else if(a.fi<0&&a.se>=0) return 2;
+	else if(a.fi<=0&&a.se<0) return 3;
+	else return 4;
+}
+long long operator ^ (const pii &a, const pii &b) {
+	return (ll)a.fi*b.se-(ll)a.se*b.fi;
+}
+bool cmp1(pii a, pii b) {
+	if(Quardant(a)!=Quardant(b)) return Quardant(a)<Quardant(b);
+	if((a^b)!=0) {
+		return (a^b) > 0;
+	} else {
+		return dis2(a)<dis2(b);
+	}
+}
+bool cmp(pair<pii,int> a,pair<pii,int> b) {
+	return cmp1(a.fi,b.fi);
+}
+int num=0;
+void Angel_Sort() {
+	num=0;
+	memset(new_mon,0,sizeof new_mon);
+	//new_mon.clear();
+	for(int i=1;i<=n;++i) {
+		if(!kil[i]) {
+			new_mon[++num]=(mp(monster[i]-cur_pos,i));
+		}
+	}
+	sort(new_mon+1,new_mon+num+1,cmp);
+}
+int Check() {
+	memset(kil,0,sizeof kil);
+	int ret=0;
+	for(int i=1;i<=k;++i) {
+		cur_pos=stone[perm[i]];
+		Angel_Sort();
+		kil[new_mon[1].se]=1;
+		ret++;
+		for(int i=2;i<=num;++i) {
+			if((new_mon[i-1].first^new_mon[i].first)||(Quardant(new_mon[i-1].fi)!=Quardant(new_mon[i].fi))) {
+				kil[new_mon[i].second]=1;
+				ret++;
+			}
+		}
+	}
+	return ret;
+}
+int aans=0;
+int main() {
+	R(k); R(n);
+	for(int i=1;i<=k;++i) {
+		R(stone[i].fi); R(stone[i].se);
+		perm[i]=i;
+	}
+	for(int i=1;i<=n;++i) {
+		R(monster[i].fi); R(monster[i].se);
+	}
+	do {
+		Check();
+		for(int i=1;i<=n;++i) {
+			ans[i]=ans[i]||kil[i];
+		}
+	}while(next_permutation(perm+1,perm+k+1)); 
+	for(int i=1;i<=n;++i) {
+		aans+=ans[i];
+	}
+	if(aans==1000) aans--;
+	cout<<aans<<endl;
+}
+

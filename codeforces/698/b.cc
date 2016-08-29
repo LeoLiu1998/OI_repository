@@ -37,37 +37,64 @@ int ori[200050];
 int f[200050];
 int ans[200500];
 int root;
+set<int> vis;
+int conf=0;
 int getf(int x) {
+	vis.clear();
 	int cur=x;
 	while(f[cur]!=cur) {
+		vis.insert(cur);
 		cur=f[cur];
-		if(cur==x) return -1;
+		if(vis.count(cur)) {
+			conf=cur;
+			return -1;
+		}
+		 vis.insert(cur);
 	}
 	int r=cur; int la;
-	while(f[x]!=x) {
+	while(r!=x) {
 		la=x;
 		x=f[x];
-		f[x]=r;
+		f[la]=r;
 	}
+	return r;
 }
 int main() {
 	R(n);
 	for(int i=1;i<=n;++i) {
 		R(ori[i]);
 		f[i]=ori[i]; ans[i]=ori[i];
-		if(ori[i]==i) root=i;
+		if(ori[i]==i&&(!root)) root=i;
 	}
 	if(root<1) {
 		root=getf(1);
 	}
 	if(root<1) {
-		root=1; cnt++;
+		root=conf; cnt++;
 	}
 	f[root]=root;
 	ans[root]=root;
-	for(int i=2;i<=n;++i) {
-		int 
+	for(int i=1;i<=n;++i) {
+		int cur=getf(i);
+		if(cur!=root) {
+			if(cur==-1) cur=conf;
+			cnt++;
+			if(cur>0) {
+				f[cur]=root;
+				ans[cur]=root;
+			}
+			else {
+				f[i]=root;
+				ans[i]=root;
+			}
+		}
 	}
+	Pn(cnt);
+	for(int i=1;i<n;++i) {
+		Ps(ans[i]);
+	}
+	Pn(ans[n]);
+
 }
 
 
