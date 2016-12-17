@@ -5,6 +5,7 @@
 using namespace std;
 #define Pn(x) printf("%d\n",x)
 #define Ps(x) printf("%d ",x)
+#define count cnt
 #define mp make_pair
 #define pb push_back
 #define fi first
@@ -26,48 +27,34 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
-int n,m,k;
+int n;
 const int maxn=200500;
-int colo[maxn];
-int f[maxn];
+int a[maxn];
+int count[maxn];
+int pre[maxn];
 bool vis[maxn];
-int getf(int x) {
-	if(f[x]==x) return x;
-	else return f[x]=getf(f[x]);
-}
-struct G{
-	map<int,int> cnt;
-	int msock,tot;
-	G() {
-		cnt.clear();
-		msock=0;
+ll ans=0;
+ll Calc(int x) {
+	ll ret=0;
+	for(int i=x;i<=200000;i+=x) {
+		ret+=((ll)pre[i+x-1] - pre[i-1])*i;
 	}
-};
-map<int,G> cl;
+	return ret;
+}	
 int main() {
-	R(n); R(m); R(k);
+	R(n);
 	for(int i=1;i<=n;++i) {
-		R(colo[i]);
-		f[i]=i;
+		R(a[i]);
+		count[a[i]]++;
 	}
-	while(m--) {
-		int l,r,lf,rf; 
-		R(l); R(r);
-		lf=getf(f[l]); rf=getf(f[r]);
-		f[lf]=f[rf]=min(lf,rf);
+	for(int i=1;i<=200000;++i) {
+		pre[i]=pre[i-1]+count[i];
 	}
 	for(int i=1;i<=n;++i) {
-		G &t = cl[getf(f[i])];
-		t.tot++;
-		t.cnt[colo[i]]++;
-		if(t.msock==0) t.msock=colo[i];
-		else t.msock= t.cnt[t.msock] > t.cnt[colo[i]] ? t.msock : colo[i];
+		if(vis[a[i]]) continue;
+		vis[a[i]]=1;
+		ans=max(ans,Calc(a[i]));
 	}
-	int ans=0;
-	for(map<int,G>::iterator i=cl.begin();i!=cl.end();i++) {
-		G &t = i->second;
-		ans+= (t.tot-t.cnt[t.msock]);
-	}
-	Pn(ans);
+	cout<<ans<<endl;
 }
 
