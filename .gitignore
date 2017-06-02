@@ -117,3 +117,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+#OI files
+*.in
+*.out
+*.ans
