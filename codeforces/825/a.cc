@@ -26,39 +26,35 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
-const int maxn=2005;
-int n,k,p;
-int a[maxn],b[maxn];
-ll l=-1,r=INT_MAX,mid;
-bool check(ll x) {
-	int cur=1;
+int n;
+int a[95];
+pii p[100];
+int cnt;
+int main() {
+	R(n);
+	rep(i,1,n,1) {
+		char ch=0; while(!isdigit(ch)) ch=getchar();
+		a[i]=ch-'0';
+	}
+	if(!a[n]) {
+		n++;
+		a[n]=0;
+	}
 	for(int i=1;i<=n;++i) {
-		while((cur<=k)&&((abs(b[cur]-a[i])+abs(p-b[cur]))>x)) cur++;
-		if(cur<=k) {
-			cur++;
+		int pos=i;
+		while(pos<n&&a[pos+1]==a[i]) pos++;
+		p[++cnt]=mp(a[i],pos-i+1);
+		i=pos;
+	}
+	for(int i=1;i<=cnt;++i) {
+		if(p[i].fi) {
+			printf("%d",p[i].se);
 		} else {
-			return 0;
+			rep(j,1,p[i].se-1,1) {
+				putchar('0');
+			}
 		}
 	}
-	return 1;
-}
-int main() {
-	R(n); R(k); R(p);
-	rep(i,1,n,1) {
-		R(a[i]);
-	}
-	rep(i,1,k,1) {
-		R(b[i]);
-	}
-	sort(a+1,a+n+1);
-	sort(b+1,b+k+1);
-	while(r-l>1) {
-		mid=(l+r)>>1;
-		if(check(mid))
-			r=mid;
-		else 
-			l=mid;
-	}
-	cout<<r<<endl;
+	puts("");
 }
 

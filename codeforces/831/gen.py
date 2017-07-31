@@ -1,9 +1,8 @@
 from random import randint
 n=100000
-print (n)
-for i in range(n):
-	print (n-i) 
-print ""
+#print (n)
+for i in range(100):
+	print 1000000000, 
 #for i in range(m):
 #	cmd=randint(1,3);
 #	if cmd == 1:

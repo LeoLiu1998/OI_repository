@@ -26,39 +26,16 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
-const int maxn=2005;
-int n,k,p;
-int a[maxn],b[maxn];
-ll l=-1,r=INT_MAX,mid;
-bool check(ll x) {
-	int cur=1;
-	for(int i=1;i<=n;++i) {
-		while((cur<=k)&&((abs(b[cur]-a[i])+abs(p-b[cur]))>x)) cur++;
-		if(cur<=k) {
-			cur++;
-		} else {
-			return 0;
-		}
-	}
-	return 1;
-}
+ll a[505]={0,1,9, 245, 7776, 254035, 8336079, 273725760, 8988999201};
+int n;
+const ll mod=(int)1e9+7;
 int main() {
-	R(n); R(k); R(p);
-	rep(i,1,n,1) {
-		R(a[i]);
+	R(n);
+	//40*a(n-1) -248*a(n-2) +430*a(n-3) -248*a(n-4) +40*a(n-5) -a(n-6)
+	for(int i=9;i<=n;++i) {
+		ll cur=(40*a[i-1]%mod)-(248*a[i-2]%mod)+(430*a[i-3]%mod)-(248*a[i-4]%mod)+(40*a[i-5]%mod)-a[i-6];
+		a[i]=(cur%mod+mod)%mod;
 	}
-	rep(i,1,k,1) {
-		R(b[i]);
-	}
-	sort(a+1,a+n+1);
-	sort(b+1,b+k+1);
-	while(r-l>1) {
-		mid=(l+r)>>1;
-		if(check(mid))
-			r=mid;
-		else 
-			l=mid;
-	}
-	cout<<r<<endl;
+	cout<<a[n]%mod<<endl;
 }
 

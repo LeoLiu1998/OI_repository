@@ -16,6 +16,12 @@ inline void R(int &x) {
 	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
 	x*=f;
 }
+inline void R(long long &x) {
+	x=0; int f=1; char ch=getchar();
+	while(ch<'0'||ch>'9') {if(ch=='-')f=-1; ch=getchar();}
+	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
+	x*=f;
+}
 void Redirect() {
 	freopen(PROB".in","r",stdin);
 #ifndef YGHDEBUG
@@ -26,39 +32,34 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
-const int maxn=2005;
-int n,k,p;
-int a[maxn],b[maxn];
-ll l=-1,r=INT_MAX,mid;
-bool check(ll x) {
-	int cur=1;
-	for(int i=1;i<=n;++i) {
-		while((cur<=k)&&((abs(b[cur]-a[i])+abs(p-b[cur]))>x)) cur++;
-		if(cur<=k) {
-			cur++;
-		} else {
-			return 0;
-		}
-	}
-	return 1;
-}
+ll n,k;
+int a[105];
+int p[int(1e7)+10];
+int cnt=0;
+ll C=0;
 int main() {
-	R(n); R(k); R(p);
+	R(n); R(k);
 	rep(i,1,n,1) {
 		R(a[i]);
+		C+=a[i];
+		for(int j=1;j*j<=a[i];++j) {
+			p[++cnt]=j;	
+			p[++cnt]=(a[i]+j-1)/j;
+		}
 	}
-	rep(i,1,k,1) {
-		R(b[i]);
+	C+=k;
+	ll ans=0;
+	sort(p,p+cnt+1);
+	cnt=unique(p,p+cnt+1)-p-1;
+	for(int i=1;i<=cnt;++i) {
+		ll d=p[i];
+		ll cur=0; //p days check once
+		rep(j,1,n,1) {
+			cur+=(a[j]+(d-1))/d;
+		}
+		if(cur<=(1.0*C/d)) {
+			ans=max(ans,C/cur);
+		}
 	}
-	sort(a+1,a+n+1);
-	sort(b+1,b+k+1);
-	while(r-l>1) {
-		mid=(l+r)>>1;
-		if(check(mid))
-			r=mid;
-		else 
-			l=mid;
-	}
-	cout<<r<<endl;
+	cout<<ans<<endl;
 }
-
