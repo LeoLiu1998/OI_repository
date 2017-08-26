@@ -1,0 +1,75 @@
+//This sourcecode is under GPLv3
+//http://yeguanghao.xyz
+#include <bits/stdc++.h>
+#define rep(name,start,end,step) for(int name=start;name<=end;name+=step)
+using namespace std;
+#define Pn(x) printf("%d\n",x)
+#define Ps(x) printf("%d ",x)
+#define mp make_pair
+#define pb push_back
+#define fi first
+#define se second
+#define PROB
+inline void R(int &x) {
+    x=0;
+    int f=1;
+    char ch=getchar();
+    while(ch<'0'||ch>'9') {
+        if(ch=='-')f=-1;
+        ch=getchar();
+    }
+    while(ch>='0'&&ch<='9') {
+        x=x*10+ch-'0';
+        ch=getchar();
+    }
+    x*=f;
+}
+void Redirect() {
+    freopen(PROB".in","r",stdin);
+#ifndef YGHDEBUG
+    freopen(PROB".out","w",stdout);
+#endif
+}
+typedef long long ll;
+typedef unsigned long long ull;
+typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
+pii a[100500];
+ll dp[100500];
+ll ans[100500];
+int m,n;
+int main() {
+    while(~scanf("%d%d",&n,&m)) {
+        memset(a,0,sizeof a);
+        memset(dp,0,sizeof dp);
+        memset(ans,0,sizeof ans);
+        for(int i=1; i<=n; ++i) {
+            R(a[i].fi);
+            R(a[i].se);
+            if(a[i].se<a[i].fi) swap(a[i].fi,a[i].se);
+        }
+        sort(a+1,a+n+1);
+        for(int i=2; i<=n; ++i) {
+            a[i].se=max(a[i].se,a[i-1].se);
+        }
+        dp[n+1]=INT_MAX;
+        for(int i=2; i<=n; ++i) {
+            if(a[i].fi>a[i-1].se) {
+                ll del=(a[i].fi-1)-a[i-1].se;
+                dp[i]=dp[i-1]+del;
+            }
+        }
+        for(int i=1; i<=n; ++i) {
+            int c=m+dp[i];
+            int pos=upper_bound(dp+1,dp+n+1,c)-dp;
+            while(dp[pos]<=c) pos++;
+            pos-=1;
+            ans[i]=a[pos].se-a[i].fi+1;
+            ans[i]+= m-max((ll)0,dp[pos]-dp[i]);
+        }
+        ll anx=0;
+        rep(i,1,n,1) anx=max(anx,ans[i]);
+        cout<<anx<<endl;
+    }
+}
+

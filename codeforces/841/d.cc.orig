@@ -1,0 +1,91 @@
+//This sourcecode is under GPLv3
+//http://yeguanghao.xyz
+#include <bits/stdc++.h>
+#define rep(name,start,end,step) for(int name=start;name<=end;name+=step)
+using namespace std;
+#define Pn(x) printf("%d\n",x)
+#define Ps(x) printf("%d ",x)
+#define mp make_pair
+#define pb push_back
+#define fi first
+#define se second
+#define PROB
+inline void R(int &x) {
+	x=0; int f=1; char ch=getchar();
+	while(ch<'0'||ch>'9') {if(ch=='-')f=-1; ch=getchar();}
+	while(ch>='0'&&ch<='9'){x=x*10+ch-'0';ch=getchar();}
+	x*=f;
+}
+void Redirect() {
+	freopen(PROB".in","r",stdin);
+#ifndef YGHDEBUG
+	freopen(PROB".out","w",stdout);
+#endif
+}
+typedef long long ll;
+typedef unsigned long long ull;
+typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
+
+int main() {
+
+}
+
+//Copyright(c)2017 Mstdream
+#include<bits/stdc++.h>
+using namespace std;
+
+inline void splay(int &v){
+ v=0;char c=0;int p=1;
+ while(c<'0' || c>'9'){if(c=='-')p=-1;c=getchar();}
+ while(c>='0' && c<='9'){v=(v<<3)+(v<<1)+c-'0';c=getchar();}
+ v*=p;
+}
+const int N=600010;
+int sz=1,to[N],fr[N],fir[N],du[N],vis[N],del[N],nxt[N],w[N];
+void add(int x,int y){
+ nxt[++sz]=fir[x],fir[x]=sz;
+ to[sz]=y,fr[sz]=x;
+ du[x]++;
+}
+void dfs(int x){
+ vis[x]=1;
+ for(int u=fir[x];u;u=nxt[u]){
+  if(!vis[to[u]]){
+   dfs(to[u]);
+   if(w[to[u]]==-1)continue;
+   if((du[to[u]]&1)!=w[to[u]]){
+    du[x]--,du[to[u]]--;
+    del[u]=del[u^1]=1;
+   }
+  }
+ }
+}
+int n,m;
+int main(){
+ freopen("xxx.in","r",stdin);
+ freopen("xxx.out","w",stdout);
+ splay(n);splay(m);
+ for(int i=1;i<=n;i++){
+  splay(w[i]);
+ }
+ for(int i=1,u,v;i<=m;i++){
+  splay(u),splay(v);
+  add(u,v),add(v,u);
+ }
+ for(int i=1;i<=n;i++){
+  if(!vis[i]&&w[i]==-1)dfs(i);
+ }
+ for(int i=1;i<=n;i++){
+  if(!vis[i]){
+   dfs(i);
+   if((du[i]&1)!=w[i])puts("-1"),exit(0);
+  }
+ }
+ int ans=0;
+ for(int i=2;i<=sz;i+=2)if(!del[i])ans++;
+ cout<<ans<<endl;
+ for(int i=2;i<=sz;i+=2){
+  if(!del[i])printf("%d\n",i/2);
+ }
+}
