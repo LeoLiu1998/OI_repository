@@ -1,4 +1,3 @@
-###这是一个蒟蒻的题解仓库
 --- 
 * [BZOJ](http://www.lydsy.com/JudgeOnline)
 * [codevs](http://codevs.cn/)
@@ -8,7 +7,7 @@
 * [poj](http://poj.org/)
 * [zerojudge](http://zerojudge.tw/)
 * [Project Euler](https://projecteuler.net)
-
+* [Codeforces](https://codeforces.com)
 ---
 ####Cautions
 * **早期代码风格**比较奇怪
@@ -23,5 +22,4 @@
 * 空格下一行
 
 ***
-* [AboutMe](http://yeguanghao.is-programmer.com/aboutme)
-* [blog](http://www.cnblogs.com/yeguanghao)
+* [Blog](http://yeguanghao.xyz)

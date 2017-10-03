@@ -45,10 +45,6 @@ int main() {
 			cnt[b[i]]++;
 			cn[b[i]][pos[i]]++;
 		}
-	//	if(cnt[1]==m) {
-	//		ans=mp(m,0);
-	///		goto NEX;
-	//	}
 		for(int i=1;i<=n;++i) {
 			for(int j=1;j<=2;++j) {
 				if(!cn[j][i]) continue;
