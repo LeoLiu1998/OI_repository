@@ -1,4 +1,4 @@
---- 
+
 * [BZOJ](http://www.lydsy.com/JudgeOnline)
 * [codevs](http://codevs.cn/)
 * [vijos](https://vijos.org)
@@ -9,12 +9,15 @@
 * [Project Euler](https://projecteuler.net)
 * [Codeforces](https://codeforces.com)
 ---
-####Cautions
+
+#### Cautions
+
 * **早期代码风格**比较奇怪
 * BZOJ的代码均有略解
 
 ***
-####Code Style
+
+#### Code Style
 	set noexpandtab
 	set tabstop=8
 	set shiftwidth=8
@@ -22,4 +25,5 @@
 * 空格下一行
 
 ***
+
 * [Blog](http://yeguanghao.xyz)
